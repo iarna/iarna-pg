@@ -16,5 +16,13 @@
     "index.js",
     "pg.js",
     "sql.js"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iarna/iarna-pg.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iarna/iarna-pg/issues"
+  },
+  "homepage": "https://github.com/iarna/iarna-pg#readme"
 }
