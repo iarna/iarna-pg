@@ -1,0 +1,20 @@
+{
+  "name": "@iarna/pg",
+  "version": "1.0.0",
+  "description": "A wrapper around `pg` providing convenience methods, an appropriate SQL template string function, easy access to cursor based streaming results (thanks to `pg-query-stream`) and a reasonable, retrying, transaction interface.",
+  "main": "index.js",
+  "keywords": [],
+  "author": "Rebecca Turner <me@re-becca.org> (http://re-becca.org/)",
+  "license": "ISC",
+  "dependencies": {
+    "funstream": "^4.2.0",
+    "pg": "^7.11.0",
+    "pg-query-stream": "^2.0.0"
+  },
+  "devDependencies": {},
+  "files": [
+    "index.js",
+    "pg.js",
+    "sql.js"
+  ]
+}
