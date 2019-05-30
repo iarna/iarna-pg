@@ -31,7 +31,7 @@ If any of the queries encounter an error, the resulting error object will
 have the SQL and bound parameters in the `sql` and `binds` properties
 respectively.
 
-### sql`SQL QUERY HERE` -> Query
+### sql\`SQL QUERY HERE\` -> Query
 
 The SQL template strings replace values as follows:
 
