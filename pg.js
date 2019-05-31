@@ -51,6 +51,7 @@ function mergeErrors (err1, err2) {
   err.errors.push(err2)
   
   Error.captureStackTrace(err, mergeErrors)
+  return err
 }
 
 class PG {
