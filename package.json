@@ -6,12 +6,20 @@
   "keywords": [],
   "author": "Rebecca Turner <me@re-becca.org> (http://re-becca.org/)",
   "license": "ISC",
+  "scripts": {
+    "pretest": "iarna-standard",
+    "test": "tap --100 test",
+    "prepublishOnly": "npm run test"
+  },
   "dependencies": {
     "funstream": "^4.2.0",
     "pg": "^7.11.0",
     "pg-query-stream": "^2.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@iarna/standard": "^2.0.1",
+    "tap": "^14.2.2"
+  },
   "files": [
     "index.js",
     "pg.js",
@@ -24,5 +32,8 @@
   "bugs": {
     "url": "https://github.com/iarna/iarna-pg/issues"
   },
-  "homepage": "https://github.com/iarna/iarna-pg#readme"
+  "homepage": "https://github.com/iarna/iarna-pg#readme",
+  "engines": {
+    "node": "^7.6.0"
+  }
 }

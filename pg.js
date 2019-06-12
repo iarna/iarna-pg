@@ -49,7 +49,7 @@ function mergeErrors (err1, err2) {
   }
   if (!err.errors) err.errors = [err1]
   err.errors.push(err2)
-  
+
   Error.captureStackTrace(err, mergeErrors)
   return err
 }
@@ -62,43 +62,43 @@ class PG {
   end () { return this.db.end() }
 
   async run (sql, binds) {
-    try {   
+    try {
       if (Array.isArray(sql)) [sql, binds] = sql
       const result = await this.db.query({text: sql, values: binds, rowMode: 'array'})
       return result.rowCount
-    } catch (ex) {
-      throw addSQLToError(ex, sql, binds)
+    } catch (err) {
+      throw addSQLToError(err, sql, binds)
     }
   }
   async value (sql, binds) {
-    try {   
+    try {
       if (Array.isArray(sql)) [sql, binds] = sql
       const result = await this.db.query({text: sql, values: binds, rowMode: 'array'})
       return result.rows.length && result.rows[0][0]
-    } catch (ex) {
-      throw addSQLToError(ex, sql, binds)
+    } catch (err) {
+      throw addSQLToError(err, sql, binds)
     }
   }
   async get (sql, binds) {
-    try {   
+    try {
       if (Array.isArray(sql)) [sql, binds] = sql
       const result = await this.db.query(sql, binds)
       return result.rows.length && result.rows[0]
-    } catch (ex) {
-      throw addSQLToError(ex, sql, binds)
+    } catch (err) {
+      throw addSQLToError(err, sql, binds)
     }
   }
   async all (sql, binds) {
-    try {   
+    try {
       if (Array.isArray(sql)) [sql, binds] = sql
       const result = await this.db.query(sql, binds)
       return result.rows
-    } catch (ex) {
-      throw addSQLToError(ex, sql, binds)
+    } catch (err) {
+      throw addSQLToError(err, sql, binds)
     }
   }
   iterate (sql, binds) {
-    try {   
+    try {
       if (Array.isArray(sql)) [sql, binds] = sql
       const query = new QueryStream(sql, binds)
       if (this.inTxn) {
@@ -110,8 +110,8 @@ class PG {
         }).catch(err => result.emit('error', err))
         return result
       }
-    } catch (ex) {
-      throw addSQLToError(ex, sql, binds)
+    } catch (err) {
+      throw addSQLToError(err, sql, binds)
     }
   }
 
@@ -156,19 +156,20 @@ class PG {
       result = await todo(client)
       await client._COMMIT()
     } catch (err) {
+      let ex = err
       try {
         await client._ROLLBACK()
         client.db.release()
       } catch (rerr) {
         client.db.release(true)
-        err = mergeErrors(err, rerr)
+        ex = mergeErrors(ex, rerr)
       }
-      if (rollback) await rollback().catch(rerr => { err = mergeErrors(err, rerr) })
+      if (rollback) await rollback().catch(rerr => { ex = mergeErrors(ex, rerr) })
       if (retriable.includes(err.code) && tries < 10) {
         await sleep(Math.floor(Math.random() * 1000))
         return this._transact(level, todo, commit, rollback, tries + 1)
       } else {
-        throw err
+        throw ex
       }
     }
     client.db.release()
