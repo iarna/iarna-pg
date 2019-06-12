@@ -36,42 +36,51 @@ respectively.
 
 The SQL template strings replace values as follows:
 
-* Nulls and undefined values are replaced with `NULL` ```
-sql`${null}` -> [NULL, []]
-sql`${undefined}` -> [NULL, []]
-```
-* Plain values are replaced with a placeholder, eg `$1` and bound, eg ```
-sql`${23}` -> ['$1', [23]]
-sql`${'abc'}` -> ['$1', ['abc']]
-```
+* Nulls and undefined values are replaced with `NULL`
+  ```
+  sql`${null}` -> [NULL, []]
+  sql`${undefined}` -> [NULL, []]
+  ```
+* Plain values are replaced with a placeholder, eg `$1` and bound, eg
+  ```
+  sql`${23}` -> ['$1', [23]]
+  sql`${'abc'}` -> ['$1', ['abc']]
+  ```
 * You can explicitly cast a value by passing in an object with a key of
-  `::type` or `$$type`.  eg ```
-sql`${{'::int': 23}}` -> ['$1::int', [23]]
-sql`${{$$int: 23}} -> ['$1::int', [23]]
-```
-* Arrays are replaced with a parenthisized list with placeholders for each value, eg ```
-sql`${[1,2,3]}` -> ['($1, $2, $3)', [1, 2, 3]]
-```
-  Individual values of the arrays may be cast, eg: ```
-sql`${[1,2,{$$int: 3}]}` -> ['($1, $2, $3::int)', [1, 2, 3]]
-```
+  `::type` or `$$type`.  eg
+  ```
+  sql`${{'::int': 23}}` -> ['$1::int', [23]]
+  sql`${{$$int: 23}} -> ['$1::int', [23]]
+  ```
+* Arrays are replaced with a parenthisized list with placeholders for each value, eg
+  ```
+  sql`${[1,2,3]}` -> ['($1, $2, $3)', [1, 2, 3]]
+  ```
+  Individual values of the arrays may be cast, eg:
+  ```
+  sql`${[1,2,{$$int: 3}]}` -> ['($1, $2, $3::int)', [1, 2, 3]]
+  ```
 * If you want a postgres array type, you can get them by explicitly casting, either to
-  a concrete type, or to `array` where it will be guessed form your data. ```
-sql`${{$$array:[1,2,3]}}` -> ['$1::numeric[]', [[1,2,3]]]
-sql`${{$$text:[1,2,3]}}` -> ['$1::text[]', [[1,2,3]]]
-```
+  a concrete type, or to `array` where it will be guessed form your data.
+  ```
+  sql`${{$$array:[1,2,3]}}` -> ['$1::numeric[]', [[1,2,3]]]
+  sql`${{$$text:[1,2,3]}}` -> ['$1::text[]', [[1,2,3]]]
+  ```
 * Ordinary objects become a comma separated key-value pairs, appropriate for
   UPDATE.  Nulls and plain values are the same as with direct values.
-  Undefined values are ignored.  eg ```
-sql`${{abc: 1, def: 2, ghi: null}}` -> ['abc=$1, def=$2, ghi=NULL', [1, 2]]
-```
+  Undefined values are ignored.  eg
+  ```
+  sql`${{abc: 1, def: 2, ghi: null}}` -> ['abc=$1, def=$2, ghi=NULL', [1, 2]]
+  ```
   Array values of objects are always cast to postgres array types, with a
-  best guess as to type, eg ```
-sql`${{abc: [1, 2, 3]}}` -> ['abc=$1::numeric[]', [[1, 2, 3]]]
-```
-  Or you can explicitly cast the array, and you should if your array might be empty: ```
-sql`${{abc: {$$int: [1, 2, 3]}}}` -> ['abc=$1::int[]', [[1, 2, 3]]]
-```
+  best guess as to type, eg
+  ```
+  sql`${{abc: [1, 2, 3]}}` -> ['abc=$1::numeric[]', [[1, 2, 3]]]
+  ```
+  Or you can explicitly cast the array, and you should if your array might be empty:
+  ```
+  sql`${{abc: {$$int: [1, 2, 3]}}}` -> ['abc=$1::int[]', [[1, 2, 3]]]
+  ```
 * And finally, if you want to construct portions of WHERE clauses, an object
   with only a key of `_` and a value of the object to become the where
   clause.  The output is parenthesised and the fields are separted with
