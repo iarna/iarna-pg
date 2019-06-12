@@ -61,12 +61,12 @@ The SQL template strings replace values as follows:
   sql`${[1,2,{$$int: 3}]}` -> ['($1, $2, $3::int)', [1, 2, 3]]
   ```
 * If you want a postgres array type, you can get them by explicitly casting, either to
-  a concrete type, or to `array` where it will be guessed form your data.
+  a concrete type, or to `array` where it will be guessed from your data.
   ```
   sql`${{$$array:[1,2,3]}}` -> ['$1::numeric[]', [[1,2,3]]]
   sql`${{$$text:[1,2,3]}}` -> ['$1::text[]', [[1,2,3]]]
   ```
-* Ordinary objects become a comma separated key-value pairs, appropriate for
+* Ordinary objects become comma separated key-value pairs, appropriate for
   UPDATE.  Nulls and plain values are the same as with direct values.
   Undefined values are ignored.  eg
   ```
@@ -83,7 +83,7 @@ The SQL template strings replace values as follows:
   ```
 * And finally, if you want to construct portions of WHERE clauses, an object
   with only a key of `_` and a value of the object to become the where
-  clause.  The output is parenthesised and the fields are separted with
+  clause.  The output is parenthesised and the fields are separated with
   ` AND ` instead of `, `.
   Specific value types differ in:
   * Null values are emitted as `field IS NULL` instead of `field=NULL`
@@ -121,7 +121,7 @@ memory.
 ### pg.repeatable(todo[, commit, rollback]) -> Promise(todoResult)
 ### pg.readonly(todo[, commit, rollback]) -> Promise(todoResult)
 
-Creates a dedicated connectio for the transactionand passes that to the
+Creates a dedicated connection for the transaction and passes that to the
 `todo` function.
 
 `todo`, `commit` and `rollback` are all functions that may return promises
@@ -129,7 +129,7 @@ or act synchronously.  `commit` and `rollback` are there to take actions in
 Node.js needed to make either commit or rollback the actions taken in the
 transaction.  They are NOT for doing database things in.  Most of the time
 you don't need them.  You only need them if you want to mutate Node.js
-datastructures in your transaction.
+data structures in your transaction.
 
 Based on which transaction method you used, it selects an isolation level as
 follows:
