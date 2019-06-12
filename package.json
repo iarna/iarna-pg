@@ -1,6 +1,6 @@
 {
   "name": "@iarna/pg",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A wrapper around `pg` providing convenience methods, an appropriate SQL template string function, easy access to cursor based streaming results (thanks to `pg-query-stream`) and a reasonable, retrying, transaction interface.",
   "main": "index.js",
   "keywords": [],
