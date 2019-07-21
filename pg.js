@@ -74,7 +74,7 @@ class PG {
     try {
       if (Array.isArray(sql)) [sql, binds] = sql
       const result = await this.db.query({text: sql, values: binds, rowMode: 'array'})
-      return result.rows.length && result.rows[0][0]
+      return result.rows.length > 0 ? result.rows[0][0] : undefined
     } catch (err) {
       throw addSQLToError(err, sql, binds)
     }
@@ -83,7 +83,7 @@ class PG {
     try {
       if (Array.isArray(sql)) [sql, binds] = sql
       const result = await this.db.query(sql, binds)
-      return result.rows.length && result.rows[0]
+      return result.rows.length > 0 ? result.rows[0] : null
     } catch (err) {
       throw addSQLToError(err, sql, binds)
     }
